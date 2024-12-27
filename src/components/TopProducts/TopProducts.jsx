@@ -1,99 +1,70 @@
-import React from "react";
-import Img1 from "../../assets/shirt/shirt.png";
-import Img2 from "../../assets/shirt/shirt2.png";
-import Img3 from "../../assets/shirt/shirt3.png";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 
-const ProductData = [
-  {
-    id: 1,
-    img: Img1,
-    title: "Casual Wear",
-    description:
-      " Lorem ipsum dolor sit amer consectetur, adipisicing elit. Sit asperiores modi Sit asperiores modi.",
-  },
-  {
-    id: 2,
-    img: Img2,
-    title: "Printed Shirt",
-    description:
-      " Lorem ipsum dolor sit amer consectetur, adipisicing elit. Sit asperiores modi Sit asperiores modi.",
-  },
-  {
-    id: 3,
-    img: Img3,
-    title: "Women shirts",
-    description:
-      " Lorem ipsum dolor sit amer consectetur, adipisicing elit. Sit asperiores modi Sit asperiores modi.",
-  },
-];
 const TopProducts = ({ handleOrderPopup }) => {
+  const [tProduct, setTproduct] = useState([]);
+
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+
+  const fetchProduct = async () => {
+    try {
+      const response = await fetch(
+        "https://api.escuelajs.co/api/v1/categories"
+      );
+      const jsonResponse = await response.json();
+      setTproduct(jsonResponse);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
   return (
-    <div>
-      <div className="container">
-        {/* header section  */}
-        <div className="text-left mb-24 ">
-          <p className="text-sm text-primary">Top Rated Products for you</p>
-          <h1 className="text-3xl font-bold">Best Products</h1>
-          <p className="text-xs text-gray-400">
-            Lorem ipsum dolor sit amer consectetur, adipisicing elit. Sit
-            asperiores modi Sit asperiores modi.
-          </p>
-        </div>
-        {/* body section */}
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2
-        md:grid-cols-3 lg:grid-cols-4 place-items-center
-        gap-20 md:gap-5"
-        >
-          {ProductData.map((data) => (
-            <div
-              className="rounded-2xl bg-white
-            dark:bg-gray-700 hover:bg-black/80
-            dark:hover:bg-primary hover:text-white
-            relative shadow-xl duration-high group 
-            max-w-[300px]"
-            >
-              {/* image section */}
-              <div className="h-[140px]">
-                <img
-                  src={data.img}
-                  alt=""
-                  className="max-w-[140px] block mx-auto drop-shadow-md    "
-                />
-              </div>
-              {/* details section */}
-              <div className="p-4  text-center">
-                {/* star rating */}
-                <div
-                  className="flex w-full items-center justify-center
-                gap-1 mt-10"
-                >
-                  <FaStar className="text-yellow-500" />
-                  <FaStar className="text-yellow-500" />
-                  <FaStar className="text-yellow-500" />
-                  <FaStar className="text-yellow-500" />
-                  <FaStar className="text-yellow-500" />
-                </div>
-                <h1 className="text-xl font-bold">{data.title}</h1>
-                <p
-                  className="text-gray-500 group-hover:text-white
-                duration-300 text-sm line-clamp-2"
-                >
-                  {data.description}
-                </p>
-                <button
-                  onClick={handleOrderPopup}
-                  className="bg-primary duration-200
-                 text-white py-1 px-4 rounded-full mt-4  
-                 items-center gap-1 group text-center justify-center"
-                >
-                  Order Now
-                </button>
-              </div>
+    <div className="container mt-14 mb-12">
+      {/* Header section */}
+      <div className="text-left mb-10">
+        <p className="text-sm text-primary">Top Rated Products for You</p>
+        <h1 className="text-3xl font-bold">Best Products</h1>
+        <p className="text-xs text-gray-400">
+          Discover the best products selected just for you. Shop from the
+          top-rated collection.
+        </p>
+      </div>
+
+      {/* Body section */}
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2  m-5
+        md:grid-cols-3 lg:grid-cols-3 gap-10 container"
+      >
+        {tProduct.map((data) => (
+          <div
+            key={data.id}
+            className="rounded-2xl bg-white dark:bg-gray-700
+            hover:bg-black/80 dark:hover:bg-primary hover:text-white
+            relative shadow-xl duration-300 group max-w-[350px] flex flex-col items-center"
+          >
+            {/* Image section */}
+            <div className="h-[140px] w-full flex justify-center">
+              <img
+                src={data.image}
+                alt={data.name}
+                className="max-w-[200px] h-[180px] block mx-auto drop-shadow-md"
+              />
             </div>
-          ))}
-        </div>
+
+            {/* Details section */}
+            <div className="p-4 text-center">
+              <h1 className="text-xl font-bold mb-2">{data.name}</h1>
+              <p className="text-sm text-gray-500 mb-1 font-bold">
+                Created At: {new Date(data.creationAt).toLocaleDateString()}
+              </p>
+              <p className="text-sm text-gray-500 font-bold">
+                Updated At: {new Date(data.updatedAt).toLocaleDateString()}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

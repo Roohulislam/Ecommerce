@@ -1,93 +1,64 @@
-import React from "react";
-import Img1 from "../../assets/women/women.png";
-import Img2 from "../../assets/women/women2.jpg";
-import Img3 from "../../assets/women/women3.jpg";
-import Img4 from "../../assets/women/women4.jpg";
-import Img5 from "../../assets/women/women5.webp";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 
-const ProductsData = [
-  {
-    id: 1,
-    img: Img1,
-    title: "Women Ethnic",
-    rating: 5.0,
-    color: "white",
-    aosDelay: "0",
-  },
-  {
-    id: 2,
-    img: Img2,
-    title: "Women Western",
-    rating: 4.5,
-    color: "Red",
-    aosDelay: "200",
-  },
-  {
-    id: 3,
-    img: Img3,
-    title: "Googles",
-    rating: 4.7,
-    color: "brown",
-    aosDelay: "400",
-  },
-  {
-    id: 4,
-    img: Img4,
-    title: "Printed T-Shirts",
-    rating: 4.4,
-    color: "yellow",
-    aosDelay: "600",
-  },
-  {
-    id: 5,
-    img: Img5,
-    title: "Fashin T-Shirt",
-    rating: 4.5,
-    color: "pink",
-    aosDelay: "800",
-  },
-];
-
 const Products = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("https://fakestoreapi.com/products");
+      const jsonData = await response.json();
+      setProducts(jsonData);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
   return (
     <div className="mt-14 mb-12">
       <div className="container">
-        {/* header section */}
-        <div className="text-center mb-10 max-w-[600]">
+        {/* Header section */}
+        <div className="text-center mb-10 max-w-[600px] mx-auto">
           <p className="text-sm text-primary">Top selling Products for you</p>
           <h1 className="text-3xl font-bold">Products</h1>
           <p className="text-xs text-gray-400">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. sit
-            asperiores modi asperiores modi
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sit
+            asperiores modi asperiores modi.
           </p>
         </div>
       </div>
-      {/* body section */}
+      {/* Body section */}
       <div>
         <div
-          className="grid grid-cols-1 sm:grid-cols-3
-        md:grid-cols-4 lg:grid-cols-5 place-items-center gap-5"
+          className="grid grid-cols-1 sm:grid-cols-2 container
+          md:grid-cols-3  place-items-center gap-5 m-5"
         >
-          {/* card section         */}
-          {ProductsData.map((data) => (
-            <div
-              data-aos="fade-up"
-              data-aos-delay={data.aosDelay}
-              key={data.id}
-            >
+          {/* Card section */}
+          {products.map((product) => (
+            <div key={product.id} className="p-4 border rounded-lg shadow-sm">
               <img
-                src={data.img}
-                alt=""
-                className="h-[220px] w-[150px]
-              object-cover rounded-md"
+                src={product.image}
+                alt={product.title}
+                className="h-[250px] w-[200px] object-center rounded-md"
+                sizes={30}
               />
-              <div>
-                <h3 className="font-semibold">{data.title}</h3>
-                <p className="text-sm text-gray-600 ">{data.color}</p>
-                <div className="flex items-center gap-1">
+              <div className="mt-4">
+                <h3 className="font-semibold text-sm ">{product.title}</h3>
+                <p className="text-sm text-gray-600">{product.category}</p>
+                <p className="text-sm font-medium text-green-600">
+                  ${product.price}
+                </p>
+
+                <div className="flex items-center gap-1 mt-2">
                   <FaStar className="text-yellow-500" />
-                  <span>{data.rating}</span>
+                  <span>{product.rating.rate}</span>
+                  <span className="text-xs text-gray-500 ml-1">
+                    ({product.rating.count} reviews)
+                  </span>
                 </div>
               </div>
             </div>
