@@ -62,7 +62,7 @@ const Navbar = ({ handleOrderPopup }) => {
           <div>
             <a href="#" className="font-bold text-2xl sm:text-3xl flex gap-2">
               <img src={offlogo} alt="logo" className="w-10" />
-              Shopsy
+              Demo Ecom Zeejan.tech
             </a>
           </div>
           {/* search bar and order btn */}

@@ -46,7 +46,7 @@ const Footer = () => {
           <div className="flex flex-col items-start">
             <div className="flex items-center gap-3 mb-3">
               <img src={footerLogo} alt="Shopsy Logo" className="w-12" />
-              <h1 className="text-3xl font-bold">Shopsy</h1>
+              <h1 className="text-3xl font-bold">Demo Ecomm Zeejan.tech</h1>
             </div>
             <p className="text-sm">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem
